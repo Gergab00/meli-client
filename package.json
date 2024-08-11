@@ -1,0 +1,16 @@
+{
+  "name": "meli-client",
+  "version": "1.0.4",
+  "description": "Cliente para manejo de tokens e interaccion con la API de Mercadolibre",
+  "main": "src/MercadoLibreClient.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Mercadolibre",
+    "Meli",
+    "Client"
+  ],
+  "author": "Gerardo Gabriel Gonzalez Velazquez",
+  "license": "MIT"
+}
