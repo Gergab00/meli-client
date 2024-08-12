@@ -15,6 +15,7 @@ class TokenStore {
     this.TokenModel = TokenModel;
     this.serviceName = serviceName;
     this.useDatabase = process.env.USE_DATABASE === 'true';
+    this.mongoURI = process.env.MONGO_URI ? true : false;
     this.tokenFilePath = path.join(__dirname, `${this.serviceName}-token.json`);
   }
 
@@ -24,19 +25,30 @@ class TokenStore {
    * @returns {object} - Datos del token almacenado.
    */
   async storeToken(tokenData) {
+    console.log('Almacenando token...');
+    console.log('Datos del token:', tokenData);
     const tokenToSave = {
       service: this.serviceName,
-      accessToken: tokenData.access_token,
-      refreshToken: tokenData.refresh_token,
+      accessToken: tokenData.accessToken,
+      refreshToken: tokenData.refreshToken,
       expiresIn: new Date(Date.now() + tokenData.expires_in * 1000),
       userId: tokenData.user_id,
       scope: tokenData.scope,
     };
 
-    if (this.useDatabase && this.TokenModel) {
-      await this.TokenModel.findOneAndUpdate({ service: this.serviceName }, tokenToSave, { upsert: true });
+    if (this.useDatabase && this.mongoURI) {
+      try {
+        await this.TokenModel.findOneAndUpdate({ service: this.serviceName }, tokenToSave, { upsert: true });
+        console.log('Token almacenado en la base de datos.');
+      } catch (error) {
+        console.error('Error al almacenar el token en la base de datos:', error);
+        console.log('Falling back to JSON storage...');
+        fs.writeFileSync(this.tokenFilePath, JSON.stringify(tokenToSave, null, 2));
+        console.log('Token almacenado en el archivo JSON. Ruta:', this.tokenFilePath);
+      }
     } else {
       fs.writeFileSync(this.tokenFilePath, JSON.stringify(tokenToSave, null, 2));
+      console.log('Token almacenado en el archivo JSON. Ruta:', this.tokenFilePath);
     }
 
     return tokenData;
@@ -49,21 +61,23 @@ class TokenStore {
   async getTokenData() {
     let tokenDoc;
 
-    if (this.useDatabase && this.TokenModel) {
-      tokenDoc = await this.TokenModel.findOne({ service: this.serviceName });
+    if (this.useDatabase && this.mongoURI) {
+      try {
+        tokenDoc = await this.TokenModel.findOne({ service: this.serviceName });
+      } catch (error) {
+        console.error('Error al recuperar el token de la base de datos:', error.message);
+        if (fs.existsSync(this.tokenFilePath)) {
+          tokenDoc = JSON.parse(fs.readFileSync(this.tokenFilePath, 'utf8'));
+          return tokenDoc;
+        }
+      }
     } else if (fs.existsSync(this.tokenFilePath)) {
       tokenDoc = JSON.parse(fs.readFileSync(this.tokenFilePath, 'utf8'));
     }
 
     if (!tokenDoc) return false;
 
-    return {
-      access_token: tokenDoc.accessToken,
-      expires_at: new Date(tokenDoc.expiresIn).getTime() / 1000,
-      refresh_token: tokenDoc.refreshToken,
-      user_id: tokenDoc.userId,
-      scope: tokenDoc.scope,
-    };
+    return tokenDoc;
   }
 
   /**
@@ -72,7 +86,7 @@ class TokenStore {
    * @returns {boolean} - True si el token está expirado, de lo contrario, false.
    */
   isTokenExpired(tokenData) {
-    return Date.now() > new Date(tokenData.expires_at * 1000);
+    return Date.now() > new Date(tokenData.expiresIn * 1000);
   }
 }
 

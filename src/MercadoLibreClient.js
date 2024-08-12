@@ -37,13 +37,14 @@ class MercadoLibreClient {
      * @throws {Error} - Si no se encuentra un token disponible.
      */
     async getAccessToken() {
-        console.log('Obteniendo token de MercadoLibre...');
+
         const tokenData = await this.authService.authorize();
+        
         if (!tokenData) {
             throw new Error('Token no disponible.');
         }
 
-        return tokenData.access_token;
+        return tokenData.accessToken;
     }
 
     /**
@@ -57,7 +58,6 @@ class MercadoLibreClient {
     async callAPI(endpoint, method, data = {}) {
         try {
             const accessToken = await this.getAccessToken();
-            console.log(`Información del token: ${accessToken}`);
 
             const url = `https://api.mercadolibre.com/${endpoint}`;
             const headers = {

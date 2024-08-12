@@ -25,16 +25,14 @@ class MercadoLibreAuthService {
         let jsonTokenData = await this.tokenStore.getTokenData();
 
         if (!jsonTokenData) {
-            console.log('No token data found, requesting authorization code...');
             const accessToken = await this.mercadoLibreAuthAPI.getAccessToken(process.env.AUTHORIZATION_CODE);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         } else if (this.tokenStore.isTokenExpired(jsonTokenData)) {
-            console.log('Token is expired, refreshing...');
-            const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refresh_token);
+            const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refreshToken);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         }
 
-        return jsonTokenData.access_token;
+        return jsonTokenData;
     }
 }
 

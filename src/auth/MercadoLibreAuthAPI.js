@@ -67,10 +67,10 @@ class MercadoLibreAuthAPI {
    */
   async refreshToken(refreshToken) {
     const data = new URLSearchParams();
-    data.append('grant_type', 'refresh_token');
+    data.append('grant_type', 'refreshToken');
     data.append('client_id', this.appId);
     data.append('client_secret', this.secretKey);
-    data.append('refresh_token', refreshToken);
+    data.append('refreshToken', refreshToken);
 
     try {
       const response = await axios.post(TOKEN_ENDPOINT, data);
