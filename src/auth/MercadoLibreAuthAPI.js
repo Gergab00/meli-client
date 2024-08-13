@@ -67,7 +67,7 @@ class MercadoLibreAuthAPI {
    */
   async refreshToken(refreshToken) {
     const data = new URLSearchParams();
-    data.append('grant_type', 'refreshToken');
+    data.append('grant_type', 'refresh_token');
     data.append('client_id', this.appId);
     data.append('client_secret', this.secretKey);
     data.append('refreshToken', refreshToken);
