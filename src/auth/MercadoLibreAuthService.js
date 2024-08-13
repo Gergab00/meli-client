@@ -24,6 +24,8 @@ class MercadoLibreAuthService {
     async authorize() {
         let jsonTokenData = await this.tokenStore.getTokenData();
 
+        console.log('Datos del token:', jsonTokenData);
+
         if (!jsonTokenData) {
             const accessToken = await this.mercadoLibreAuthAPI.getAccessToken(process.env.AUTHORIZATION_CODE);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
@@ -31,7 +33,6 @@ class MercadoLibreAuthService {
             const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refreshToken);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         }
-
         return jsonTokenData;
     }
 }
