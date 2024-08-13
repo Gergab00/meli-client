@@ -86,7 +86,9 @@ class TokenStore {
    * @returns {boolean} - True si el token está expirado, de lo contrario, false.
    */
   isTokenExpired(tokenData) {
-    return Date.now() > new Date(tokenData.expiresIn * 1000);
+    const expirationDate = new Date(tokenData.expiresIn);
+    const isExpired = Date.now() > expirationDate;
+    return isExpired;
   }
 }
 
