@@ -25,33 +25,28 @@ class TokenStore {
    * @returns {object} - Datos del token almacenado.
    */
   async storeToken(tokenData) {
-    console.log('Almacenando token...');
-    console.log('Datos del token:', tokenData);
     const tokenToSave = {
       service: this.serviceName,
-      accessToken: tokenData.accessToken,
-      refreshToken: tokenData.refreshToken,
-      expiresIn: new Date(Date.now() + tokenData.expires_in * 1000),
-      userId: tokenData.user_id,
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token,
+      expires_in: tokenData.expires_in,  // Se guarda en segundos, sin modificar
+      user_id: tokenData.user_id,
       scope: tokenData.scope,
+      expiration_time: Date.now() + tokenData.expires_in * 1000 // Almacena el tiempo exacto de expiración
     };
 
     if (this.useDatabase && this.mongoURI) {
       try {
         await this.TokenModel.findOneAndUpdate({ service: this.serviceName }, tokenToSave, { upsert: true });
-        console.log('Token almacenado en la base de datos.');
       } catch (error) {
         console.error('Error al almacenar el token en la base de datos:', error);
-        console.log('Falling back to JSON storage...');
         fs.writeFileSync(this.tokenFilePath, JSON.stringify(tokenToSave, null, 2));
-        console.log('Token almacenado en el archivo JSON. Ruta:', this.tokenFilePath);
       }
     } else {
       fs.writeFileSync(this.tokenFilePath, JSON.stringify(tokenToSave, null, 2));
-      console.log('Token almacenado en el archivo JSON. Ruta:', this.tokenFilePath);
     }
 
-    return tokenData;
+    return tokenToSave;
   }
 
   /**
@@ -86,7 +81,7 @@ class TokenStore {
    * @returns {boolean} - True si el token está expirado, de lo contrario, false.
    */
   isTokenExpired(tokenData) {
-    const expirationDate = new Date(tokenData.expiresIn);
+    const expirationDate = tokenData.expiration_time;
     const isExpired = Date.now() > expirationDate;
     return isExpired;
   }

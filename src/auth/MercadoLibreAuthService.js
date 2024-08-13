@@ -24,15 +24,14 @@ class MercadoLibreAuthService {
     async authorize() {
         let jsonTokenData = await this.tokenStore.getTokenData();
 
-        console.log('Datos del token:', jsonTokenData);
-
         if (!jsonTokenData) {
             const accessToken = await this.mercadoLibreAuthAPI.getAccessToken(process.env.AUTHORIZATION_CODE);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         } else if (this.tokenStore.isTokenExpired(jsonTokenData)) {
-            const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refreshToken);
+            const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refresh_token);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         }
+
         return jsonTokenData;
     }
 }
