@@ -7,5 +7,6 @@ dist/
 # Ignore any files or directories starting with a dot
 .*
 
-# Ignore JSON files
+# Ignore JSON files except for package.json
+!package.json
 *.json
