@@ -44,7 +44,7 @@ class MercadoLibreClient {
             throw new Error('Token no disponible.');
         }
 
-        return tokenData.accessToken;
+        return tokenData.access_token;
     }
 
     /**
