@@ -39,6 +39,9 @@ class MercadoLibreClient {
     async getAccessToken() {
 
         const tokenData = await this.authService.authorize();
+
+
+        console.log(tokenData);
         
         if (!tokenData) {
             throw new Error('Token no disponible.');
