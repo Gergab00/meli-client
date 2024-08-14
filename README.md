@@ -1,4 +1,7 @@
 # meli-client
+
+<span style="color:red"><b>EL PRESENTE PAQUETE SE ENCUENTRA EN DESARROLLO, CUALQUIER DUDA O COMENTARIO SE AGRADECE AL CORREO [gergab00hotmail.com](mailto:gergab00hotmail.com) o al correo [gergab00gmail.com](mailto:gergab00gmail.com)</b></span>
+
 `meli-client` es un paquete de Node.js que proporciona un cliente para interactuar con la API de MercadoLibre. Maneja la autenticación, el almacenamiento de tokens, y facilita las solicitudes a la API de MercadoLibre de manera sencilla.
 
 ## Características
