@@ -1,32 +1,42 @@
+// src/MercadoLibreClient.js
 const axios = require('axios');
 const MercadoLibreAuthAPI = require('./auth/MercadoLibreAuthAPI');
 const TokenStore = require('./auth/TokenStore');
 const MercadoLibreAuthService = require('./auth/MercadoLibreAuthService');
 const Token = require('./models/Token');
+
 /**
- * Clase que maneja las llamadas a la API de MercadoLibre.
+ * Cliente para interactuar con la API de MercadoLibre.
+ * Maneja automáticamente la autenticación y renovación de tokens.
+ * 
+ * @class MercadoLibreClient
+ * 
  */
 class MercadoLibreClient {
     /**
      * Constructor para la clase MercadoLibreClient.
      * Inicializa el almacenamiento de tokens y el servicio de autenticación.
      * @param {object} options - Opciones de configuración.
-     * @param {string} [options.appId] - ID de la aplicación de MercadoLibre.
-     * @param {string} [options.secretKey] - Clave secreta de la aplicación.
-     * @param {string} [options.redirectUri] - URI de redirección configurada en la aplicación.
-     * @param {object} [options.tokenModel] - Modelo de Mongoose para manejar tokens.
-     * @param {boolean} [options.useDatabase] - Define si se utiliza la base de datos para almacenar tokens.
+     * @param {string} [options.appId] - ID de la aplicación de MercadoLibre. Por defecto usa process.env.APP_ID.
+     * @param {string} [options.secretKey] - Clave secreta de la aplicación. Por defecto usa process.env.SECRET_KEY.
+     * @param {string} [options.redirectUri] - URI de redirección configurada en la aplicación. Por defecto usa process.env.REDIRECT_URI.
+     * @param {object} [options.mongoose] - Instancia de mongoose para crear el modelo de tokens.
+     * @throws {Error} Si no se proporciona un modelo de tokens válido.
      */
     constructor(options = {}) {
         const {
             appId = process.env.APP_ID,
             secretKey = process.env.SECRET_KEY,
             redirectUri = process.env.REDIRECT_URI,
-            tokenModel = Token,
+            tokenModel = options.tokenModel || (options.mongoose ? Token(options.mongoose) : null)
         } = options;
+        
+        if (!tokenModel) {
+            throw new Error("TokenModel no se ha proporcionado. Asegúrate de pasar un modelo de Mongoose válido.");
+        }
 
         const mercadoLibreAuthAPI = new MercadoLibreAuthAPI(appId, secretKey, redirectUri);
-        const tokenStore = new TokenStore(tokenModel, appId);
+        const tokenStore = new TokenStore(tokenModel, appId); // Pasamos tokenModel a TokenStore
 
         this.authService = new MercadoLibreAuthService(mercadoLibreAuthAPI, tokenStore);
     }
@@ -37,17 +47,13 @@ class MercadoLibreClient {
      * @throws {Error} - Si no se encuentra un token disponible.
      */
     async getAccessToken() {
-
         const tokenData = await this.authService.authorize();
-
-
-        console.log(tokenData);
         
         if (!tokenData) {
             throw new Error('Token no disponible.');
         }
 
-        return tokenData.access_token;
+        return tokenData.accessToken;
     }
 
     /**

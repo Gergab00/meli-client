@@ -1,3 +1,4 @@
+// src/auth/TokenStore.js
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -8,10 +9,13 @@ const path = require('path');
 class TokenStore {
   /**
    * Constructor para la clase TokenStore.
-   * @param {object} TokenModel - Modelo de Mongoose para manejar tokens (opcional).
+   * @param {object} TokenModel - Modelo de Mongoose para manejar tokens.
    * @param {string} serviceName - Nombre del servicio, utilizado como identificador para el token.
    */
   constructor(TokenModel, serviceName = process.env.APP_ID) {
+    if (!TokenModel) {
+      throw new Error("TokenModel es requerido. Asegúrate de pasar un modelo de Mongoose válido al crear TokenStore.");
+    }
     this.TokenModel = TokenModel;
     this.serviceName = serviceName;
     this.useDatabase = process.env.USE_DATABASE === 'true';
@@ -27,10 +31,10 @@ class TokenStore {
   async storeToken(tokenData) {
     const tokenToSave = {
       service: this.serviceName,
-      access_token: tokenData.access_token,
-      refresh_token: tokenData.refresh_token,
-      expires_in: tokenData.expires_in,  // Se guarda en segundos, sin modificar
-      user_id: tokenData.user_id,
+      accessToken: tokenData.access_token,
+      refreshToken: tokenData.refresh_token,
+      expiresIn: tokenData.expires_in,  // Se guarda en segundos, sin modificar
+      userId: tokenData.user_id,
       scope: tokenData.scope,
       expiration_time: Date.now() + tokenData.expires_in * 1000 // Almacena el tiempo exacto de expiración
     };

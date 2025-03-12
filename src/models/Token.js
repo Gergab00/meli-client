@@ -1,3 +1,4 @@
+// src/models/Token.js
 /**
  * Represents a token in the application.
  * @typedef {Object} Token
@@ -10,18 +11,17 @@
  * @property {Date} createdAt - The creation date of the token.
  * @property {Date} updatedAt - The last update date of the token.
  */
-const mongoose = require('mongoose');
+module.exports = (mongoose) => {
+  const tokenSchema = new mongoose.Schema({
+    service: { type: String, required: true, unique: true },
+    accessToken: { type: String, required: true },
+    refreshToken: { type: String, required: true },
+    expiresIn: { type: Date, required: true },
+    userId: { type: String, required: true },
+    scope: { type: String },
+  }, {
+    timestamps: true,
+  });
 
-const tokenSchema = new mongoose.Schema({
-  service: { type: String, required: true, unique: true },
-  accessToken: { type: String, required: true },
-  refreshToken: { type: String, required: true },
-  expiresIn: { type: Date, required: true },
-  userId: { type: String, required: true },
-  scope: { type: String },
-}, {
-  timestamps: true,
-});
-
-module.exports = mongoose.model('Token', tokenSchema);
-
+  return mongoose.model('Token', tokenSchema);
+};
