@@ -12,6 +12,11 @@
  * @property {Date} updatedAt - The last update date of the token.
  */
 module.exports = (mongoose) => {
+  // Verificar si el modelo ya existe para evitar sobrescribirlo
+  if (mongoose.models && mongoose.models.Token) {
+    return mongoose.models.Token;
+  }
+
   const tokenSchema = new mongoose.Schema({
     service: { type: String, required: true, unique: true },
     accessToken: { type: String, required: true },
