@@ -33,10 +33,9 @@ class TokenStore {
       service: this.serviceName,
       accessToken: tokenData.access_token,
       refreshToken: tokenData.refresh_token,
-      expiresIn: tokenData.expires_in,  // Se guarda en segundos, sin modificar
+      expiresIn: Date.now() + tokenData.expires_in * 1000,  // Almacena el tiempo exacto de expiración
       userId: tokenData.user_id,
       scope: tokenData.scope,
-      expiration_time: Date.now() + tokenData.expires_in * 1000 // Almacena el tiempo exacto de expiración
     };
 
     if (this.useDatabase && this.mongoURI) {
@@ -85,7 +84,7 @@ class TokenStore {
    * @returns {boolean} - True si el token está expirado, de lo contrario, false.
    */
   isTokenExpired(tokenData) {
-    const expirationDate = tokenData.expiration_time;
+    const expirationDate = tokenData.expiresIn;
     const isExpired = Date.now() > expirationDate;
     return isExpired;
   }
