@@ -28,7 +28,7 @@ class MercadoLibreAuthService {
             const accessToken = await this.mercadoLibreAuthAPI.getAccessToken(process.env.AUTHORIZATION_CODE);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         } else if (this.tokenStore.isTokenExpired(jsonTokenData)) {
-            const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refresh_token);
+            const accessToken = await this.mercadoLibreAuthAPI.refreshToken(jsonTokenData.refreshToken);
             jsonTokenData = await this.tokenStore.storeToken(accessToken);
         }
 
