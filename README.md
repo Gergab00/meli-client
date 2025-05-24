@@ -1,19 +1,21 @@
 # meli-client
 
+[![Repositorio en GitHub](https://img.shields.io/badge/GitHub-Gergab00%2Fmeli--client-blue?logo=github)](https://github.com/Gergab00/meli-client)
+
 <span style="color:red"><b>EL PRESENTE PAQUETE SE ENCUENTRA EN DESARROLLO. CUALQUIER DUDA O COMENTARIO SE AGRADECE AL CORREO [gergab00@hotmail.com](mailto:gergab00@hotmail.com) o [gergab00@gmail.com](mailto:gergab00@gmail.com)</b></span>
 
 `meli-client` es un paquete de Node.js que proporciona un cliente para interactuar con la API de MercadoLibre. Maneja la autenticación, el almacenamiento de tokens y facilita las solicitudes a la API de MercadoLibre de manera sencilla.
 
 ## Características
 
-- **Autenticación Automática**: Se encarga de obtener y actualizar el token de acceso automáticamente.
-- **Almacenamiento de Tokens**: Permite almacenar los tokens en MongoDB o en un archivo JSON, dependiendo de la configuración.
-- **Interfaz Simple**: Facilita la realización de solicitudes a la API de MercadoLibre con una simple llamada a un método.
+* **Autenticación Automática**: Se encarga de obtener y actualizar el token de acceso automáticamente.
+* **Almacenamiento de Tokens**: Permite almacenar los tokens en MongoDB o en un archivo JSON, dependiendo de la configuración.
+* **Interfaz Simple**: Facilita la realización de solicitudes a la API de MercadoLibre con una simple llamada a un método.
 
 ## Requisitos
 
-- Node.js v12 o superior
-- MongoDB (opcional, si decides almacenar tokens en una base de datos)
+* Node.js v12 o superior
+* MongoDB (opcional, si decides almacenar tokens en una base de datos)
 
 ## Instalación
 
@@ -39,7 +41,7 @@ MONGO_URI=mongodb://tu_url_de_mongodb  # Solo necesario si USE_DATABASE es true
 
 ### 1. Configuración de la Conexión con MongoDB
 
-Para almacenar los tokens en la base de datos, es necesario proporcionar una instancia de `mongoose` al cliente `meli-client`. 
+Para almacenar los tokens en la base de datos, es necesario proporcionar una instancia de `mongoose` al cliente `meli-client`.
 
 Ejemplo de conexión a MongoDB en tu aplicación principal:
 
@@ -116,21 +118,20 @@ Creado por [Gerardo Gabriel Gonzalez Velazquez](https://www.linkedin.com/in/gera
 
 ## Contribución
 
-¡Nos encantaría recibir contribuciones de la comunidad! Si tienes alguna idea, sugerencia o corrección, por favor abre un issue o envía un pull request en el repositorio de GitHub.
+¡Nos encantaría recibir contribuciones de la comunidad! Si tienes alguna idea, sugerencia o corrección, por favor abre un issue o envía un pull request en el [repositorio de GitHub](https://github.com/Gergab00/meli-client).
 
 ## Soporte
 
-Si tienes alguna pregunta o necesitas ayuda con el paquete `meli-client`, puedes consultar la documentación oficial en el repositorio de GitHub o unirte a nuestra comunidad en el canal de Slack.
+Si tienes alguna pregunta o necesitas ayuda con el paquete `meli-client`, puedes consultar la documentación oficial en el [repositorio de GitHub](https://github.com/Gergab00/meli-client) o unirte a nuestra comunidad en el canal de Slack.
 
 ## Versiones Disponibles
 
-Puedes encontrar las versiones disponibles del paquete `meli-client` en el repositorio de GitHub. Asegúrate de utilizar la versión más reciente para acceder a las últimas características y mejoras.
+Puedes encontrar las versiones disponibles del paquete `meli-client` en el [repositorio de GitHub](https://github.com/Gergab00/meli-client). Asegúrate de utilizar la versión más reciente para acceder a las últimas características y mejoras.
 
 ## Problemas Conocidos
 
-En el repositorio de GitHub también encontrarás una lista de problemas conocidos y soluciones alternativas. Si encuentras algún problema que no esté documentado, por favor abre un issue para que podamos solucionarlo.
+En el [repositorio de GitHub](https://github.com/Gergab00/meli-client) también encontrarás una lista de problemas conocidos y soluciones alternativas. Si encuentras algún problema que no esté documentado, por favor abre un issue para que podamos solucionarlo.
 
 ## Contribuidores
 
-Agradecemos a todos los contribuidores que han ayudado a mejorar el paquete `meli-client`. Puedes encontrar una lista completa de los contribuidores en el archivo CONTRIBUTORS.md del repositorio de GitHub.
-
+Agradecemos a todos los contribuidores que han ayudado a mejorar el paquete `meli-client`. Puedes encontrar una lista completa de los contribuidores en el archivo `CONTRIBUTORS.md` del repositorio de GitHub.
