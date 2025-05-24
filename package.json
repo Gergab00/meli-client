@@ -13,10 +13,13 @@
   ],
   "author": "Gerardo Gabriel Gonzalez Velazquez",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gergab00/meli-client.git"
+  },
   "dependencies": {
     "axios": "^1.7.4",
     "dotenv": "^16.4.5",
-    "meli-client": "file:",
     "mongoose": "^8.5.3"
   }
 }
